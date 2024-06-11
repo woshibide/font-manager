@@ -18,37 +18,38 @@ enum FontAction: String {
 
 func registerFont(withPath path: String) -> Bool {
     let fontURL = URL(fileURLWithPath: path)
+    let fontURLs = [fontURL] as CFArray
 
-    var error: Unmanaged<CFError>?
-    let success = CTFontManagerRegisterFontsForURL(fontURL as CFURL, .persistent, &error)
-
-    if success {
-        print("Successfully registered font at path: \(path)")
-        return true
-    } else {
-        if let error = error {
-            print("Failed to register font at path: \(path), error: \(error.takeUnretainedValue())")
-        }
+CTFontManagerRegisterFontURLs(fontURLs, .persistent, true) { (errors, done) -> Bool in
+        if(done) {
+            print("Successfully registered font at path: \(path)")
+        } else {
+        print("Failed to register font at path: \(path)")
+        print(errors as Array)
         return false
-    }
+        }
+    return true
 }
+    return true
+}
+
 
 func unregisterFont(withPath path: String) -> Bool {
     let fontURL = URL(fileURLWithPath: path)
+    let fontURLs = [fontURL] as CFArray
 
-    var error: Unmanaged<CFError>?
-    let success = CTFontManagerUnregisterFontsForURL(fontURL as CFURL, .persistent, &error)
-
-    if success {
-        print("Successfully unregistered font at path: \(path)")
+    CTFontManagerUnregisterFontURLs(fontURLs, .persistent) { (errors, done) -> Bool in
+            if(done) {
+                print("Successfully unregistered font at path: \(path)")
+            } else {
+            print("Failed to unregister font at path: \(path)")
+            print(errors as Array)
+            return false
+            }
         return true
-    } else {
-        if let error = error {
-            print("Failed to unregister font at path: \(path), error: \(error.takeUnretainedValue())")
-        }
-        return false
     }
-}
+        return true
+    }
 
 func printUsage() {
     print("Usage: font-manager.swift [register|unregister] /path/to/font.ttf")
