@@ -74,7 +74,7 @@ func listInstalledFonts() {
 }
 
 func printUsage() {
-    print("Usage: font-manager.swift [register|unregister /path/to/font.ttf] | list")
+    print("Usage: font-manager list | register | unregister [ /path/to/font.ttf ]")
 }
 
 // Main execution
