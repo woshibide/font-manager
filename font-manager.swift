@@ -9,7 +9,6 @@
 // v1.2. Now lists all registered fonts outside the standard font folders,
 // giving their filepath.
 
-
 import Foundation
 import CoreText
 import AppKit
@@ -27,9 +26,15 @@ func registerFont(withPath path: String) -> Bool {
 
     var registrationSuccessful = true
     CTFontManagerRegisterFontURLs(fontURLs, .persistent, true) { (urls, finished) -> Bool in
-        if !finished {
-            print("Failed to register font at path: \(path)")
-            registrationSuccessful = false
+        let errorCount = CFArrayGetCount(urls)
+        if errorCount > 0 {
+            for i in 0..<errorCount {
+                if let error = unsafeBitCast(CFArrayGetValueAtIndex(urls, i), to: CFError.self) as CFError? {
+                    let errorDescription = CFErrorCopyDescription(error) as String
+                    print("Failed to register font: \(errorDescription)")
+                    registrationSuccessful = false
+                }
+            }
         }
         return finished
     }
@@ -46,9 +51,15 @@ func unregisterFont(withPath path: String) -> Bool {
 
     var unregistrationSuccessful = true
     CTFontManagerUnregisterFontURLs(fontURLs, .persistent) { (urls, finished) -> Bool in
-        if !finished {
-            print("Failed to unregister font at path: \(path)")
-            unregistrationSuccessful = false
+        let errorCount = CFArrayGetCount(urls)
+        if errorCount > 0 {
+            for i in 0..<errorCount {
+                if let error = unsafeBitCast(CFArrayGetValueAtIndex(urls, i), to: CFError.self) as CFError? {
+                    let errorDescription = CFErrorCopyDescription(error) as String
+                    print("Failed to unregister font: \(errorDescription)")
+                    unregistrationSuccessful = false
+                }
+            }
         }
         return finished
     }
@@ -63,8 +74,9 @@ func listInstalledFonts() {
     let fontManager = NSFontManager.shared
     let fontFamilies = fontManager.availableFontFamilies
 
+    print("Installed fonts:")
     for family in fontFamilies {
-        print(family)
+        print("\n\(family)")
         if let fontNames = fontManager.availableMembers(ofFontFamily: family) {
             for font in fontNames {
                 if let fontName = font.first as? String {
