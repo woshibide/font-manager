@@ -64,11 +64,11 @@ func listInstalledFonts() {
     let fontFamilies = fontManager.availableFontFamilies
 
     for family in fontFamilies {
-        print("Font Family: \(family)")
+        print(family)
         if let fontNames = fontManager.availableMembers(ofFontFamily: family) {
             for font in fontNames {
                 if let fontName = font.first as? String {
-                    print("\tFont: \(fontName)")
+                    print("\t\(fontName)")
                 }
             }
         }
