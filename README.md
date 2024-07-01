@@ -19,3 +19,8 @@ You can also list all installed (registered) fonts.
 You can also list all activated fonts in 'external' locations (i.e. non-standard OS font folders), with their filepaths.
 
 This code was created by Code Copilot, under my tutelage! 
+
+***Usage***
+
+The bare Swift code will run from the Terminal prompt. (Don't forget to check that the executable flags are set.)
+Alternatively, you can compile it with `swiftc ./file-manager.swift`, which will create a binary that you can put in `/usr/local/bin` or similar.
