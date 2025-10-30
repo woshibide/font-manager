@@ -1,10 +1,32 @@
 # font-manager
 Command line utility to activate and de-activate fonts on macOS.
 
+## Installation
+
+1. Clone or download this repository.
+2. Make the script executable:  
+   ```bash
+   chmod +x font-manager.swift
+   ```
+3. (Optional) Move the script to a directory in your PATH for easier access:  
+   ```bash
+   sudo mv font-manager.swift /usr/local/bin/font-manager
+   ```
+4. Alternatively, compile it into a binary:  
+   ```bash
+   swiftc font-manager.swift -o font-manager
+   sudo mv font-manager /usr/local/bin/
+   ```
+
+## Enhancements
+
+The CLI now supports multiple font files in a single command. For example, `font-manager register *.ttf *.otf` will register all matching fonts. This behavior extends to the `unregister` command as well.
 
     font-manager register /path/to/font.otf
+    font-manager register *.ttf *.otf
 
     font-manager unregister /path/to/font.otf
+    font-manager unregister *.otf
 
     font-manager list
 
@@ -20,7 +42,11 @@ You can also list all activated fonts in 'external' locations (i.e. non-standard
 
 This code was created by Code Copilot, under my tutelage! 
 
-***Usage***
+## Usage
 
-The bare Swift code will run from the Terminal prompt. (Don't forget to check that the executable flags are set.)
-Alternatively, you can compile it with `swiftc ./file-manager.swift`, which will create a binary that you can put in `/usr/local/bin` or similar.
+### Commands
+
+- `font-manager register <path(s)>`: Register font file(s). Supports wildcards (e.g., `*.ttf`).
+- `font-manager unregister <path(s)>`: Unregister font file(s). Supports wildcards.
+- `font-manager list`: List all installed fonts.
+- `font-manager list-ext`: List fonts in non-standard locations with paths.
